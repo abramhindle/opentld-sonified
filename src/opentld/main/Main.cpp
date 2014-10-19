@@ -30,6 +30,8 @@
 #include "Gui.h"
 #include "TLDUtil.h"
 #include "Trajectory.h"
+#include "lo/lo.h"
+
 
 using namespace tld;
 using namespace cv;
@@ -40,6 +42,9 @@ void Main::doWork()
     IplImage *img = imAcqGetImg(imAcq);
     Mat grey(img->height, img->width, CV_8UC1);
     cvtColor(cvarrToMat(img), grey, CV_BGR2GRAY);
+    lo_address lo_t = lo_address_new("127.0.0.1", "57120");
+
+
 
     tld->detectorCascade->imgWidth = grey.cols;
     tld->detectorCascade->imgHeight = grey.rows;
@@ -129,6 +134,10 @@ void Main::doWork()
             skipProcessingOnce = false;
         }
 
+        if(tld->currBB != NULL) {
+		printf("%d %.2d %.2d %.2d %.2d %f\n", imAcq->currentFrame - 1, tld->currBB->x, tld->currBB->y, tld->currBB->width, tld->currBB->height, tld->currConf);
+		lo_send(lo_t,"/tld","iiiiif",imAcq->currentFrame - 1, tld->currBB->x, tld->currBB->y, tld->currBB->width, tld->currBB->height, tld->currConf);
+        }
         if(printResults != NULL)
         {
             if(tld->currBB != NULL)

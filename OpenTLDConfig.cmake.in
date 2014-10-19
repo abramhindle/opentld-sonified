@@ -15,7 +15,7 @@ INCLUDE_DIRECTORIES(${OPENTLD_INCLUDE_DIRS})
 SET(OPENTLD_LIB_DIRS ${LIBRARY_OUTPUT_PATH})
 LINK_DIRECTORIES(${OPENTLD_LIB_DIRS})
 
-set(OPENTLD_LIBS cvblobs libconfig libopentld)
+set(OPENTLD_LIBS cvblobs libconfig libopentld liblo)
 
 
 
